@@ -1,14 +1,8 @@
-import os
 from pymongo import MongoClient
+import os
 
-MONGO_URI = os.getenv("MONGO_URI")
+MONGO_URI = os.environ.get("MONGO_URI")
 
 client = MongoClient(MONGO_URI)
-
-# --- IMPORTANT FIX ---
-# Always pick DB name from the URI
-db = client.get_database()
-
-# Collections
+db = client["production"]
 users_col = db["users"]
-refresh_tokens_col = db["refresh_tokens"]
