@@ -1,14 +1,19 @@
-# database/db.py
 import os
 from pymongo import MongoClient
-from dotenv import load_dotenv
 
-load_dotenv()
+MONGO_URI = os.environ.get("MONGO_URI")
 
-MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017/mydb")
-client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
-db = client.get_default_database() if client.get_default_database() else client["mydb"]
+if not MONGO_URI:
+    raise Exception("MONGO_URI not set")
+
+client = MongoClient(MONGO_URI)
+
+# extract DB name from URI
+db_name = MONGO_URI.rsplit("/", 1)[-1].split("?")[0]
+
+if not db_name:
+    raise Exception("Database name missing in MONGO_URI")
+
+db = client[db_name]
 
 users_col = db["users"]
-# Example index: ensure username unique
-users_col.create_index("username", unique=True, background=True)
