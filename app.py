@@ -2,19 +2,20 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 import os
 
-# Blueprints
-from routes.auth import auth_blueprint
-from routes.main import main_blueprint
+from routes.auth import auth
+from routes.profile import profile
+from routes.admin import admin
 
 app = Flask(__name__)
 CORS(app)
 
-app.register_blueprint(auth_blueprint, url_prefix="/auth")
-app.register_blueprint(main_blueprint, url_prefix="/api")
+app.register_blueprint(auth, url_prefix="/auth")
+app.register_blueprint(profile, url_prefix="/")
+app.register_blueprint(admin, url_prefix="/")
 
 @app.route("/")
 def home():
-    return jsonify({"msg": "FREE Python Backend Server Live!"})
+    return jsonify({"msg": "Backend Live — karanbannaa108"})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
