@@ -1,22 +1,24 @@
-from flask import Flask, jsonify
+# app.py
+from flask import Flask
+from routes.auth import auth
+from routes.admin import admin
+from routes.main import main
 from flask_cors import CORS
 import os
-
-from routes.auth import auth
-from routes.profile import profile
-from routes.admin import admin
 
 app = Flask(__name__)
 CORS(app)
 
-app.register_blueprint(auth, url_prefix="/auth")
-app.register_blueprint(profile, url_prefix="/")
-app.register_blueprint(admin, url_prefix="/")
+# register blueprints
+app.register_blueprint(auth)
+app.register_blueprint(admin, url_prefix="/api")
+app.register_blueprint(main)
 
-@app.route("/")
-def home():
-    return jsonify({"msg": "Backend Live — karanbannaa108"})
+# Health check
+@app.route("/health")
+def health():
+    return {"status":"ok"}
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
