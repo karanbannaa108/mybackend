@@ -1,19 +1,14 @@
 import os
 from pymongo import MongoClient
 
-MONGO_URI = os.environ.get("MONGO_URI")
-
-if not MONGO_URI:
-    raise Exception("MONGO_URI not set")
+MONGO_URI = os.getenv("MONGO_URI")
 
 client = MongoClient(MONGO_URI)
 
-# extract DB name from URI
-db_name = MONGO_URI.rsplit("/", 1)[-1].split("?")[0]
+# --- IMPORTANT FIX ---
+# Always pick DB name from the URI
+db = client.get_database()
 
-if not db_name:
-    raise Exception("Database name missing in MONGO_URI")
-
-db = client[db_name]
-
+# Collections
 users_col = db["users"]
+refresh_tokens_col = db["refresh_tokens"]
