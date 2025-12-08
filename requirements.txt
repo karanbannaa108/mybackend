@@ -1,6 +1,7 @@
-flask
-flask-cors
-flask-bcrypt
-pymongo[srv]
-pyjwt
-python-dotenv
+Flask==2.3.3
+pymongo==4.7.0
+python-dotenv==1.0.0
+pyjwt==2.8.0
+flask-cors==3.0.10
+passlib[bcrypt]==1.7.4
+gunicorn==21.2.0
